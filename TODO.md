@@ -1,7 +1,7 @@
 # RepoVista 구현 진행 상황
 
-**마지막 업데이트**: 2026-02-02 21:40 KST  
-**진행률**: 8/15 태스크 완료 (53%)
+**마지막 업데이트**: 2026-02-02 22:00 KST  
+**진행률**: 10/15 태스크 완료 (67%)
 
 ---
 
@@ -55,39 +55,43 @@
   - Commit: `c3f13fc - feat: add RepositoriesController and routes`
   - Commit: `b522b36 - feat: implement DockerRegistryService, MockRegistryService, and models`
 
+### Wave 3: 뷰 및 인터랙션 (진행 중)
+- [x] **Task 9**: Repository 목록 뷰
+  - app/views/repositories/index.html.erb 생성
+  - app/views/repositories/_repository_card.html.erb 생성
+  - app/views/repositories/index.turbo_stream.erb 생성
+  - 검색 폼, 정렬 드롭다운, 반응형 그리드 구현
+  - Commit: `91b50fe - feat: implement Repository listing view with responsive grid`
+
+- [x] **Task 10**: Tag 상세 뷰
+  - app/views/repositories/show.html.erb 생성
+  - app/views/repositories/_tag_row.html.erb 생성
+  - 태그 테이블, Copy 버튼 포함
+  - Commit: `1e15e2d - feat: implement Tag details view with metadata`
+
 ---
 
 ## 🚧 현재 작업 중
 
-### Task 9: Repository 목록 뷰 (in_progress)
-**상태**: 시작 안 함 (컨트롤러까지만 완료)
+### Task 11: Stimulus 컨트롤러 구현 (다음 작업)
+**상태**: 시작 안 함
 
 **해야 할 일**:
-1. `app/views/repositories/index.html.erb` 생성
-   - 검색 입력 필드 (Stimulus search_controller)
-   - 정렬 드롭다운
-   - Turbo Frame으로 감싼 리포지토리 그리드
+1. `app/javascript/controllers/search_controller.js` 생성
+   - 디바운스 입력 (300ms)
+   - Turbo Frame 업데이트 트리거
 
-2. `app/views/repositories/_repository_card.html.erb` 생성
-   - 리포지토리 이름, 태그 수, 마지막 업데이트
-   - 클릭 시 상세로 이동
-   - 반응형: 모바일 1열, 태블릿 2열, 데스크탑 3열
+2. `app/javascript/controllers/clipboard_controller.js` 생성
+   - 클릭 시 텍스트 복사
+   - 복사 완료 피드백 (아이콘/텍스트 변경)
 
-3. `app/views/repositories/index.turbo_stream.erb` 생성 (검색용)
-
-4. 검증 후 커밋: `feat: implement Repository listing view with responsive grid`
+**참고**: theme_controller.js는 Task 4에서 이미 완료됨
 
 ---
 
 ## 📋 남은 작업 (Wave 3 & Wave 4)
 
-### Wave 3: 뷰 및 인터랙션
-- [ ] **Task 10**: Tag 상세 뷰
-  - app/views/repositories/show.html.erb
-  - app/views/repositories/_tag_row.html.erb
-  - Copy Pull Command 버튼
-
-- [ ] **Task 11**: Stimulus 컨트롤러 구현
+- [ ] **Task 11**: Stimulus 컨트롤러 구현 (다음 작업)
   - app/javascript/controllers/search_controller.js (디바운스)
   - app/javascript/controllers/clipboard_controller.js (복사)
   - theme_controller.js는 이미 완료됨
@@ -120,18 +124,21 @@
 
 ## 🎯 다음 시작 지점
 
-**Task 9부터 재개하세요:**
+**Task 11부터 재개하세요:**
 
 ```bash
 # 1. 서버 실행하여 현재 상태 확인
 bin/dev
 
 # 2. http://localhost:3000 접속
-# 예상 동작: RepositoriesController#index 실행되나 뷰가 없어서 에러
+# 예상 동작: Repository 목록이 표시됨 (Mock 데이터)
+# Repository 클릭 → Tag 상세 페이지
+# 검색 기능은 아직 동작 안 함 (search_controller.js 필요)
+# Copy 버튼 동작 안 함 (clipboard_controller.js 필요)
 
-# 3. Task 9 구현 시작
-# app/views/repositories/index.html.erb 생성
-# app/views/repositories/_repository_card.html.erb 생성
+# 3. Task 11 구현 시작
+# app/javascript/controllers/search_controller.js 생성
+# app/javascript/controllers/clipboard_controller.js 생성
 ```
 
 ---
@@ -156,14 +163,15 @@ repo-vista/
 │   │   ├── layouts/
 │   │   │   └── application.html.erb ✅
 │   │   └── repositories/
-│   │       ├── index.html.erb ❌ (다음 작업)
-│   │       ├── show.html.erb ❌
-│   │       ├── _repository_card.html.erb ❌
-│   │       └── _tag_row.html.erb ❌
+│   │       ├── index.html.erb ✅
+│   │       ├── show.html.erb ✅
+│   │       ├── _repository_card.html.erb ✅
+│   │       ├── _tag_row.html.erb ✅
+│   │       └── index.turbo_stream.erb ✅
 │   ├── javascript/controllers/
 │   │   ├── theme_controller.js ✅
-│   │   ├── search_controller.js ❌
-│   │   └── clipboard_controller.js ❌
+│   │   ├── search_controller.js ❌ (다음 작업)
+│   │   └── clipboard_controller.js ❌ (다음 작업)
 │   └── assets/stylesheets/
 │       └── application.tailwind.css ✅
 ├── config/
@@ -206,9 +214,9 @@ npx playwright test  # E2E (Task 14 이후)
 
 ## 📊 예상 남은 시간
 
-- **Wave 3 (Task 9-12)**: 약 2-3시간 (뷰 구현 + Stimulus)
+- **Wave 3 남은 작업 (Task 11-12)**: 약 1시간 (Stimulus + Skeleton UI)
 - **Wave 4 (Task 13-15)**: 약 2-3시간 (테스트 + 문서화)
-- **총**: 약 4-6시간
+- **총**: 약 3-4시간
 
 ---
 
