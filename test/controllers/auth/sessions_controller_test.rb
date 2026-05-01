@@ -83,4 +83,11 @@ class Auth::SessionsControllerTest < ActionDispatch::IntegrationTest
     get "/sign_in"
     assert_redirected_to root_path
   end
+
+  test "GET /sign_in shows project description and PAT/help pointers" do
+    get "/sign_in"
+    assert_response :ok
+    assert_select "p", text: /open-repo.*self-hosted Docker registry/i
+    assert_select "a[href=?]", "/help", text: /Setup guide/i
+  end
 end
