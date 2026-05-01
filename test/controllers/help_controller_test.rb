@@ -30,4 +30,12 @@ class HelpControllerTest < ActionDispatch::IntegrationTest
     assert_match(/personal access token/i, response.body,
       "expected /help to describe oprk_ as a personal access token prefix")
   end
+
+  # B-37: /help must guide users through PAT generation.
+  test "GET /help renders PAT generation guidance" do
+    get "/help"
+    assert_response :ok
+    assert_select "h2", text: /Personal Access Token/i
+    assert_select "a[href=?]", "/settings/tokens"
+  end
 end
