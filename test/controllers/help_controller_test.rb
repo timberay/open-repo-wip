@@ -46,4 +46,12 @@ class HelpControllerTest < ActionDispatch::IntegrationTest
     assert_select "h2", text: /HTTP vs HTTPS/i
     assert_select "*", text: /insecure-registries/
   end
+
+  # B-46: /help must walk users from sign-in through docker login.
+  test "GET /help shows sign-in to docker-login walkthrough" do
+    get "/help"
+    assert_response :ok
+    assert_select "h2", text: /Sign in.*docker login/i
+    assert_select "*", text: /docker login/
+  end
 end
