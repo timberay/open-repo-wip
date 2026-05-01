@@ -16,6 +16,29 @@
   </div>
 <% end %>
 
+<%# HTTP vs HTTPS (B-39) %>
+<%= render CardComponent.new(padding: :none, class: "mb-6") do %>
+  <div class="p-6">
+    <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-4">HTTP vs HTTPS</h2>
+    <p class="text-base text-slate-700 dark:text-slate-300 mb-3">
+      Docker daemon refuses plain HTTP registries by default. You have two options:
+    </p>
+    <ul class="list-disc list-inside text-sm text-slate-700 dark:text-slate-300 space-y-2 mb-3">
+      <li>
+        <strong>Development / intranet:</strong> add the host to
+        <code class="bg-slate-100 dark:bg-slate-900 px-1.5 py-0.5 rounded text-sm font-mono">insecure-registries</code>
+        in <code class="bg-slate-100 dark:bg-slate-900 px-1.5 py-0.5 rounded text-sm font-mono">/etc/docker/daemon.json</code> (see Daemon Configuration above).
+      </li>
+      <li>
+        <strong>Production:</strong> terminate TLS at a reverse proxy (Nginx example below) and serve the registry over <code class="bg-slate-100 dark:bg-slate-900 px-1.5 py-0.5 rounded text-sm font-mono">https://</code>. No client config needed.
+      </li>
+    </ul>
+    <p class="text-sm text-slate-500 dark:text-slate-400">
+      Credentials sent to a plain-HTTP registry are visible on the wire. Use HTTPS whenever the registry is reachable beyond a single trusted host.
+    </p>
+  </div>
+<% end %>
+
 <%# Personal Access Tokens (B-37) %>
 <%= render CardComponent.new(padding: :none, class: "mb-6") do %>
   <div class="p-6">

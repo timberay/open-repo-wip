@@ -38,4 +38,12 @@ class HelpControllerTest < ActionDispatch::IntegrationTest
     assert_select "h2", text: /Personal Access Token/i
     assert_select "a[href=?]", "/settings/tokens"
   end
+
+  # B-39: /help must explain the HTTP-vs-HTTPS choice.
+  test "GET /help renders HTTP vs HTTPS guidance" do
+    get "/help"
+    assert_response :ok
+    assert_select "h2", text: /HTTP vs HTTPS/i
+    assert_select "*", text: /insecure-registries/
+  end
 end
