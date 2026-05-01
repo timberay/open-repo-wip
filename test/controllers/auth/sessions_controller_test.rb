@@ -46,7 +46,7 @@ class Auth::SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal users(:tonny).id, session[:user_id]
 
     delete sign_out_path
-    assert_redirected_to root_path
+    assert_redirected_to sign_in_path
     assert_nil session[:user_id]
   end
 
